@@ -32,19 +32,18 @@ public class GetFeedData
         IExecutionContext context)
     {
         List<IDocument> outputs = new List<IDocument>();
+
+        const string feedUrl = "https://twitchrss.appspot.com/vod/devchatter";
+        var xmlReaderSettings = new XmlReaderSettings
+        {
+            Async = true,
+            DtdProcessing = DtdProcessing.Ignore
+        };
+        
         using (WebClient webClient = new WebClient())
-        using(Stream stream = 
-            await webClient.OpenReadTaskAsync(
-                "https://twitchrss.appspot.com/vod/devchatter"))
+        using(var stream = await webClient.OpenReadTaskAsync(feedUrl))
         using(StreamReader streamReader = new StreamReader(stream))
-        using(XmlReader xmlReader
-            = XmlReader.Create(
-                streamReader,
-                new XmlReaderSettings
-                {
-                    Async = true,
-                    DtdProcessing = DtdProcessing.Ignore
-                }))
+        using(XmlReader xmlReader = XmlReader.Create(streamReader, xmlReaderSettings))
         {
             xmlReader.MoveToContent();
             Wyam.Common.Tracing.Trace.Information($"Read feed");
