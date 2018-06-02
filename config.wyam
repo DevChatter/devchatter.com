@@ -1,9 +1,10 @@
 #recipe Blog
-#theme Phantom
+#theme SolidState
 
 // Customize your settings and add new ones here
 Settings[Keys.Host] = "devchatter.com";
 Settings[BlogKeys.Title] = "DevChatter";
-Settings[BlogKeys.Description] = "Welcome!";
+Settings[BlogKeys.Description] = "Welcome to DevChatter!";
+Settings["Intro"] = "We're a community of developers around a twitch stream!";
 
 // Add any pipeline customizations here
