@@ -20,14 +20,14 @@ Settings["Intro"] = "We're a community of developers around a twitch stream!";
 
 // Add any pipeline customizations here
 Pipelines.Add("Feed",
-    new Execute((inputs, ctx, _) => GetFeedDataWorker(inputs, ctx).Result),
+    new Execute((inputs, ctx, _) => GetFeedData.GetFeedDataWorker(inputs, ctx).Result),
     new Content((doc, ctx) => $"Title: { doc.String("Title") }, Description: { doc.String("Description") }"),
     new WriteFiles((doc, ctx) => $"{doc.String("Filename")}.html")
 );
 
 public class GetFeedData
 {
-    public async Task<IEnumerable<IDocument>>
+    public static async Task<IEnumerable<IDocument>>
         GetFeedDataWorker(IReadOnlyList<IDocument> inputs,
         IExecutionContext context)
     {
