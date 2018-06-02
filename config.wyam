@@ -1,0 +1,9 @@
+#recipe Blog
+#theme Phantom
+
+// Customize your settings and add new ones here
+Settings[Keys.Host] = "devchatter.com";
+Settings[BlogKeys.Title] = "DevChatter";
+Settings[BlogKeys.Description] = "Welcome!";
+
+// Add any pipeline customizations here
