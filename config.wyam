@@ -56,11 +56,11 @@ public class GetFeedData
                     ISyndicationItem item = await feedReader.ReadItem();
                     IDocument doc = context.GetDocument(new MetadataItems
                     {
-                        ["Title"] = item.Title,
-                        ["Link"] = item.Links.FirstOrDefault(x => x.RelationshipType == RssLinkTypes.Alternate)?.Uri.ToString() ?? item.Id,
-                        ["Published"] = item.Published,
-                        ["Description"] = item.Description,
-                        ["Filename"] = outputs.Count
+                        { "Title", item.Title },
+                        { "Link", item.Links.FirstOrDefault(x => x.RelationshipType == RssLinkTypes.Alternate)?.Uri.ToString() ?? item.Id },
+                        { "Published", item.Published },
+                        { "Description", item.Description },
+                        { "Filename", outputs.Count }
                     });
                     outputs.Add(doc);
                 }
