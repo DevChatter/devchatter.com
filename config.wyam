@@ -1,6 +1,17 @@
 #recipe Blog
 #theme SolidState
 
+#n Microsoft.SyndicationFeed.ReaderWriter -v 1.0.2
+
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using System.IO;
+using System.Xml;
+using Microsoft.SyndicationFeed;
+using Microsoft.SyndicationFeed.Rss;
+using Microsoft.SyndicationFeed.Atom;
+
 // Customize your settings and add new ones here
 Settings[Keys.Host] = "devchatter.com";
 Settings[BlogKeys.Title] = "DevChatter";
@@ -8,3 +19,54 @@ Settings[BlogKeys.Description] = "Welcome to DevChatter!";
 Settings["Intro"] = "We're a community of developers around a twitch stream!";
 
 // Add any pipeline customizations here
+Pipelines.Add("Feed",
+    new Execute((inputs, ctx, _) => GetFeedDataWorker(inputs, ctx).Result),
+    new Content((doc, ctx) => $"Title: { doc.String("Title") }, Description: { doc.String("Description") }"),
+    new WriteFiles((doc, ctx) => $"{doc.String("Filename")}.html")
+);
+
+public class GetFeedData
+{
+    public async Task<IEnumerable<IDocument>>
+        GetFeedDataWorker(IReadOnlyList<IDocument> inputs,
+        IExecutionContext context)
+    {
+        List<IDocument> outputs = new List<IDocument>();
+        using (WebClient webClient = new WebClient())
+        using(Stream stream = 
+            await webClient.OpenReadTaskAsync(
+                "https://twitchrss.appspot.com/vod/devchatter"))
+        using(StreamReader streamReader = new StreamReader(stream))
+        using(XmlReader xmlReader
+            = XmlReader.Create(
+                streamReader,
+                new XmlReaderSettings
+                {
+                    Async = true,
+                    DtdProcessing = DtdProcessing.Ignore
+                }))
+        {
+            xmlReader.MoveToContent();
+            Wyam.Common.Tracing.Trace.Information($"Read feed");
+            XmlFeedReader feedReader = new RssFeedReader(xmlReader);
+            while(await feedReader.Read())
+            {
+                if(feedReader.ElementType == SyndicationElementType.Item)
+                {
+                    // Create a Wyam document from the RSS item
+                    ISyndicationItem item = await feedReader.ReadItem();
+                    IDocument doc = context.GetDocument(new MetadataItems
+                    {
+                        { "Title", item.Title },
+                        { "Link", item.Links.FirstOrDefault(x => x.RelationshipType == RssLinkTypes.Alternate)?.Uri.ToString() ?? item.Id; },
+                        { "Published", item.Published },
+                        { "Description", item.Description },
+                        { "Filename", outputs.Count }
+                    });
+                    outputs.Add(doc);
+                }
+            }
+        }
+        return outputs;
+    }
+}
