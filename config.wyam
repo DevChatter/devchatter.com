@@ -16,7 +16,7 @@ using Microsoft.SyndicationFeed.Atom;
 Settings[Keys.Host] = "devchatter.com";
 Settings[BlogKeys.Title] = "DevChatter";
 Settings[BlogKeys.Description] = "Welcome to DevChatter!";
-Settings["Intro"] = "We're a community of developers around a twitch stream!";
+//Settings["Intro"] = "Where the dev chat never stops!";
 
 // Add any pipeline customizations here
 Pipelines.Add("VideoFeed",
@@ -60,7 +60,7 @@ public class GetFeedData
                         { "Link", item.Links.FirstOrDefault(x => x.RelationshipType == RssLinkTypes.Alternate)?.Uri.ToString() ?? item.Id },
                         { "Published", item.Published },
                         { "Description", item.Description },
-                        { "Filename", outputs.Count }
+                        { "Filename", item.Id }
                     });
                     outputs.Add(doc);
                 }
