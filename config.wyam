@@ -22,7 +22,11 @@ Settings[BlogKeys.Description] = "Welcome to DevChatter!";
 Pipelines.Add("VideoFeed",
     new Execute((inputs, ctx, _) => GetFeedData.GetFeedDataWorker(inputs, ctx).Result),
     new Content((doc, ctx) => $"Title: { doc.String("Title") }, Description: { doc.String("Description") }"),
-    new WriteFiles((doc, ctx) => $"{doc.String("Filename")}.html")
+    new WriteFiles((doc, ctx) => 
+    {
+        DateTime publishedDate = DateTime.Parse(doc.String("Published"));
+        return $"videos\\{publishedDate:yyyyMMdd}-{doc.String("Filename")}.html";
+    })
 );
 
 public class GetFeedData
