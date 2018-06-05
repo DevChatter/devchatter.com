@@ -1,0 +1,11 @@
+@{
+    Layout = "_Layout.cshtml";
+}
+
+@section Header {
+    @Html.Partial("_VideoHeader.cshtml")
+}
+
+@RenderBody()
+
+@Html.Partial("_VideoFooter.cshtml")

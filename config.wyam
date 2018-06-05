@@ -21,7 +21,8 @@ Settings[BlogKeys.Description] = "Welcome to DevChatter!";
 // Add any pipeline customizations here
 Pipelines.Add("VideoFeed",
     new Execute((inputs, ctx, _) => GetFeedData.GetFeedDataWorker(inputs, ctx).Result),
-    new Content((doc, ctx) => $"Title: { doc.String("Title") }, Description: { doc.String("Description") }"),
+    //new Content((doc, ctx) => $"Title: { doc.String("Title") }, Description: { doc.String("Description") }"),
+    new Razor().WithLayout("_VideoLayout.cshtml"),
     new WriteFiles((doc, ctx) => 
     {
         DateTime publishedDate = DateTime.Parse(doc.String("Published"));
