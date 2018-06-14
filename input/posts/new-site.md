@@ -1,6 +1,8 @@
 Title: New DevChatter.com Web Site
 Published: 6/5/2018
-Tags: Introduction
+Tags: 
+- Introduction
+- Wyam.io
 ---
 This post is scheduled for publication on the day we first put our site on Azure as a static site (preview). We're doing a stream on June 5, 2018 with [Maxime Rouiller](https://twitter.com/MaximRouiller) where he will be showing us the static site preview in Azure and talking with us about thow this serverless hosting approach can be effective for doing automatically-generated static sites.
 
