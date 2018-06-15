@@ -1,5 +1,9 @@
-header#header {
-}
-
-header#header h1 {
+#header h1 a {
+    background: url("/assets/css/images/DevChatterLogo-DarkBackground.png");
+    width : 150px;
+    height : 63px;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    text-indent: -9999px;
 }
