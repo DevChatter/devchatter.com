@@ -17,6 +17,7 @@ Settings[Keys.Host] = "devchatter.com";
 Settings[BlogKeys.Title] = "DevChatter";
 Settings[BlogKeys.Description] = "Welcome to DevChatter!";
 Settings[BlogKeys.Image] = "/images/basic-banner.png";
+Settings["LinkHideExtensions"] = false;
 //Settings["Intro"] = "Where the dev chat never stops!";
 
 // Add any pipeline customizations here
